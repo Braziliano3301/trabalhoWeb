@@ -1,36 +1,47 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
     let pontuacao = 0;
 
-    $('#formJogador').on('submit', function(evento) {
+    const formJogador = document.getElementById("formJogador");
+    const formPalpite = document.getElementById("formPalpite");
+    const nomeJogadorInput = document.getElementById("nomeJogador");
+    const tituloJogo = document.getElementById("tituloJogo");
+    const palpiteInput = document.getElementById("palpite");
+    const resultadoDiv = document.getElementById("resultado");
+    const pontuacaoDiv = document.getElementById("pontuacao");
+    const reiniciarJogoBtn = document.getElementById("reiniciarJogo");
+
+    formJogador.addEventListener("submit", function(evento) {
         evento.preventDefault();
-        let nomeJogador = $('#nomeJogador').val();
-        $('#tituloJogo').text(`Jogo da Sorte - Boa sorte, ${nomeJogador}!`);
-        $('#formJogador').addClass('d-none');
-        $('#formPalpite').removeClass('d-none');
-        $('#pontuacao').text(`Pontuação: ${pontuacao}`);
+        const nomeJogador = nomeJogadorInput.value;
+        tituloJogo.textContent = `Jogo da Sorte - Boa sorte, ${nomeJogador}!`;
+        formJogador.classList.add("d-none");
+        formPalpite.classList.remove("d-none");
+        pontuacaoDiv.textContent = `Pontuação: ${pontuacao}`;
     });
 
-    $('#formPalpite').on('submit', function(evento) {
+    formPalpite.addEventListener("submit", function(evento) {
         evento.preventDefault();
-        let palpiteJogador = parseInt($('#palpite').val());
-        let numeroSorteado = Math.floor(Math.random() * 10) + 1;
+        const palpiteJogador = parseInt(palpiteInput.value);
+        const numeroSorteado = Math.floor(Math.random() * 10) + 1;
 
-        $('#resultado').removeClass('d-none alert-success alert-danger');
+        resultadoDiv.classList.remove("d-none", "alert-success", "alert-danger");
         if (palpiteJogador === numeroSorteado) {
-            $('#resultado').addClass('alert-success').text(`Parabéns! Você acertou! O número era ${numeroSorteado}.`);
+            resultadoDiv.classList.add("alert-success");
+            resultadoDiv.textContent = `Parabéns! Você acertou! O número era ${numeroSorteado}.`;
             pontuacao++;
         } else {
-            $('#resultado').addClass('alert-danger').text(`Que pena! Você errou. O número sorteado era ${numeroSorteado}. Tente novamente!`);
+            resultadoDiv.classList.add("alert-danger");
+            resultadoDiv.textContent = `Que pena! Você errou. O número sorteado era ${numeroSorteado}. Tente novamente!`;
         }
-        $('#pontuacao').text(`Pontuação: ${pontuacao}`);
-        $('#reiniciarJogo').removeClass('d-none');
-        $('#formPalpite button[type="submit"]').addClass('d-none');
+        pontuacaoDiv.textContent = `Pontuação: ${pontuacao}`;
+        reiniciarJogoBtn.classList.remove("d-none");
+        formPalpite.querySelector("button[type='submit']").classList.add("d-none");
     });
 
-    $('#reiniciarJogo').on('click', function() {
-        $('#resultado').addClass('d-none');
-        $('#palpite').val('');
-        $('#formPalpite button[type="submit"]').removeClass('d-none');
-        $('#reiniciarJogo').addClass('d-none');
+    reiniciarJogoBtn.addEventListener("click", function() {
+        resultadoDiv.classList.add("d-none");
+        palpiteInput.value = '';
+        formPalpite.querySelector("button[type='submit']").classList.remove("d-none");
+        reiniciarJogoBtn.classList.add("d-none");
     });
 });
